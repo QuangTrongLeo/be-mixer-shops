@@ -18,4 +18,40 @@ public class Role {
 	
 	@ManyToMany(mappedBy = "roles")
 	private Collection<User> users = new HashSet<User>();
+
+	public Role(Long id, String name, Collection<User> users) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.users = users;
+	}
+
+	public Role() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Collection<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Collection<User> users) {
+		this.users = users;
+	}
+	
 }

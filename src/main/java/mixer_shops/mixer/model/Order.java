@@ -35,4 +35,69 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	public Order(Long id, LocalDate orderDate, int totalAmount, OrderStatus orderStatus, Set<OrderItem> orderItems,
+			User user) {
+		super();
+		this.id = id;
+		this.orderDate = orderDate;
+		this.totalAmount = totalAmount;
+		this.orderStatus = orderStatus;
+		this.orderItems = orderItems;
+		this.user = user;
+	}
+
+	public Order() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public int getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Set<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(Set<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 }
