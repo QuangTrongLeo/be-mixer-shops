@@ -2,10 +2,13 @@ package mixer_shops.mixer.service.color;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Color;
 import mixer_shops.mixer.repository.ColorRepository;
 
+@Service
 public class ColorService implements IColorService{
 	private final ColorRepository colorRepository;
 
