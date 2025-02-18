@@ -59,7 +59,7 @@ public class ProductService implements IProductService{
 	public void deleteProductById(Long id) {
 		// TODO Auto-generated method stub
 		productRepository.findById(id)
-			.ifPresentOrElse(productRepository::delete, () -> new ResourcesException("Product not found!"));
+			.ifPresentOrElse(productRepository::delete, () -> { throw new ResourcesException("Product not found!"); });
 	}
 
 	@Override

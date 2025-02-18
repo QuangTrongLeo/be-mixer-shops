@@ -29,7 +29,12 @@ public class Product {
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Color> colors;
-	
+
+	public Product(String name, int price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
 
 	public Product(String name, int price, Category category) {
 		super();

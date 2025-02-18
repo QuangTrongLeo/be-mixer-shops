@@ -35,6 +35,13 @@ public class Color {
 		this.sizes = sizes;
 	}
 
+	public Color(String name, String hexCode, Product product) {
+		super();
+		this.name = name;
+		this.hexCode = hexCode;
+		this.product = product;
+	}
+
 	public Color() {
 		super();
 	}
