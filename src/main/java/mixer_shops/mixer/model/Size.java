@@ -26,6 +26,12 @@ public class Size {
 		this.inventory = inventory;
 		this.color = color;
 	}
+	public Size(String name, int inventory, Color color) {
+		super();
+		this.name = name;
+		this.inventory = inventory;
+		this.color = color;
+	}
 	public Size() {
 		super();
 	}

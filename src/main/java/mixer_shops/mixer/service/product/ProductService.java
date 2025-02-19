@@ -1,7 +1,6 @@
 package mixer_shops.mixer.service.product;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -30,13 +29,13 @@ public class ProductService implements IProductService{
 		// check if the category is found in the DB
 		// if yes, set it as the new product category
 		// The set as the new product category
-		Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
-				.orElseGet(() -> {
-					Category newCategory = new Category(request.getCategory().getName());
-					return categoryRepository.save(newCategory);
-				});
-		request.setCategory(category);
-		return productRepository.save(createProduct(request, category));
+		Category category = categoryRepository.findByName(request.getCategory().getName());
+	    if (category == null) {
+	        category = new Category(request.getCategory().getName());
+	        category = categoryRepository.save(category);
+	    }
+	    request.setCategory(category);
+	    return productRepository.save(createProduct(request, category));
 	}
 	
 	private Product createProduct(AddProductRequest request, Category category) {

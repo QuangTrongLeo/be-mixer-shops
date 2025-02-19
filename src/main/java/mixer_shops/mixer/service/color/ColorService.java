@@ -42,9 +42,7 @@ public class ColorService implements IColorService{
 	    }
 
 	    request.setProduct(product);
-
-	    Color color = createColor(request, product);
-	    return colorRepository.save(color);
+	    return colorRepository.save(createColor(request, product));
 	}
 
 	
