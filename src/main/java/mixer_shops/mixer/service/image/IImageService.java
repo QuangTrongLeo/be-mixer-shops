@@ -9,7 +9,7 @@ import mixer_shops.mixer.model.Image;
 
 public interface IImageService {
 	Image getImageById(Long id);
-	List<ImageDto> saveImages(List<MultipartFile> file, Long productId);
+	List<ImageDto> saveImages(List<MultipartFile> files, Long productId);
 	void updateImage(MultipartFile file, Long imageId);
 	void deleteImageById(Long id);
 	List<Image> getAllImages();
