@@ -2,6 +2,8 @@ package mixer_shops.mixer.service.size;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Category;
 import mixer_shops.mixer.model.Color;
@@ -14,6 +16,7 @@ import mixer_shops.mixer.repository.SizeRepository;
 import mixer_shops.mixer.request.AddSizeRequest;
 import mixer_shops.mixer.request.UpdateSizeRequest;
 
+@Service
 public class SizeService implements ISizeService{
 	private final SizeRepository sizeRepository;
 	private final ColorRepository colorRepository;
