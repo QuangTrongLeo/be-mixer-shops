@@ -85,7 +85,7 @@ public class ImageController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload faild!", null));
 	}
 	
-	@GetMapping("/all-images")
+	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllImages(){
 		try {
 			List<Image> images = imageService.getAllImages();
