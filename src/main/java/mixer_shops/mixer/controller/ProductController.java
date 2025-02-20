@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.request.AddProductRequest;
 import mixer_shops.mixer.request.UpdateProductRequest;
@@ -67,9 +68,14 @@ public class ProductController {
 		try {
 			productService.deleteProductById(productId);
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
-		} catch (Exception e) {
+		} catch (ResourcesException e) {
 			// TODO: handle exception
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Error!", null));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", e.getMessage()));
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}
 	
