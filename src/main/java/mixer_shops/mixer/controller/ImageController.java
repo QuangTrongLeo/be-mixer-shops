@@ -46,7 +46,7 @@ public class ImageController {
 		}
 	}
 	
-	@GetMapping("/image/{imageId}/download")
+	@GetMapping("/image/download/{imageId}")
 	public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException{
 		Image image = imageService.getImageById(imageId);
 		ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
@@ -83,19 +83,5 @@ public class ImageController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload faild!", null));
-	}
-	
-	@GetMapping("/all")
-	public ResponseEntity<ApiResponse> getAllImages(){
-		try {
-			List<Image> images = imageService.getAllImages();
-			if (images.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("No images found", null));
-			}
-			return ResponseEntity.ok(new ApiResponse("Success!", images));
-		} catch (Exception e) {
-			// TODO: handle exception
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Can not get all images", null));
-		}
 	}
 }

@@ -91,11 +91,4 @@ public class ImageService implements IImageService{
 		imageRepository.findById(id)
 			.ifPresentOrElse(imageRepository::delete, () -> { throw new ResourcesException("Image not found");});
 	}
-
-	@Override
-	public List<Image> getAllImages() {
-		// TODO Auto-generated method stub
-		return imageRepository.findAll();
-	}
-
 }

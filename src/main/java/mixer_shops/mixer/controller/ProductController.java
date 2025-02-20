@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import mixer_shops.mixer.dto.ProductDto;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.request.AddProductRequest;
@@ -34,7 +35,8 @@ public class ProductController {
 	public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
 		try {
 			Product product = productService.getProductById(productId);
-			return ResponseEntity.ok(new ApiResponse("Success!", product));
+			ProductDto convertProduct = productService.convertoDto(product);
+			return ResponseEntity.ok(new ApiResponse("Success!", convertProduct));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
@@ -83,9 +85,11 @@ public class ProductController {
 	public ResponseEntity<ApiResponse> getAllProducts(){
 		try {
 			List<Product> products = productService.getAllProducts();
-			return ResponseEntity.ok(new ApiResponse("Success!", products));
+			List<ProductDto> convertedProduct = productService.getConvertedProducts(products);
+			return ResponseEntity.ok(new ApiResponse("Success!", convertedProduct));
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}

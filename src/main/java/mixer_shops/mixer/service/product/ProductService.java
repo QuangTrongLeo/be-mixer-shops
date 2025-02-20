@@ -2,12 +2,17 @@ package mixer_shops.mixer.service.product;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import mixer_shops.mixer.dto.ImageDto;
+import mixer_shops.mixer.dto.ProductDto;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Category;
+import mixer_shops.mixer.model.Image;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.repository.CategoryRepository;
+import mixer_shops.mixer.repository.ImageRepository;
 import mixer_shops.mixer.repository.ProductRepository;
 import mixer_shops.mixer.request.AddProductRequest;
 import mixer_shops.mixer.request.UpdateProductRequest;
@@ -16,11 +21,15 @@ import mixer_shops.mixer.request.UpdateProductRequest;
 public class ProductService implements IProductService{
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
+	private final ImageRepository imageRepository;
+	private final ModelMapper modelMapper;
 	
-	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ModelMapper modelMapper) {
 		super();
 		this.productRepository = productRepository;
 		this.categoryRepository = categoryRepository;
+		this.imageRepository = imageRepository;
+		this.modelMapper = new ModelMapper();
 	}
 
 	@Override
@@ -104,4 +113,18 @@ public class ProductService implements IProductService{
 		return productRepository.findByNameIgnoreCase(name);
 	}
 	
+	@Override
+	public List<ProductDto> getConvertedProducts(List<Product> products){
+		return products.stream().map(this::convertoDto).toList();
+	}
+	
+	@Override
+	public ProductDto convertoDto(Product product) {
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
+		List<Image> images = imageRepository.findByProductId(product.getId());
+		List<ImageDto> imageDtos = images.stream()
+				.map(image -> modelMapper.map(image, ImageDto.class)).toList();
+		productDto.setImages(imageDtos);
+		return productDto;
+	}
 }
