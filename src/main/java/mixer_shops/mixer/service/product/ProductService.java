@@ -101,7 +101,7 @@ public class ProductService implements IProductService{
 	@Override
 	public List<Product> getProductsByName(String name) {
 		// TODO Auto-generated method stub
-		return productRepository.findByName(name);
+		return productRepository.findByNameIgnoreCase(name);
 	}
 	
 }
