@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import mixer_shops.mixer.exceptions.ResourcesException;
-import mixer_shops.mixer.model.Category;
 import mixer_shops.mixer.model.Color;
 import mixer_shops.mixer.model.Product;
-import mixer_shops.mixer.repository.CategoryRepository;
 import mixer_shops.mixer.repository.ColorRepository;
 import mixer_shops.mixer.repository.ProductRepository;
 import mixer_shops.mixer.request.AddColorRequest;
@@ -18,31 +16,24 @@ import mixer_shops.mixer.request.UpdateColorRequest;
 public class ColorService implements IColorService{
 	private final ColorRepository colorRepository;
 	private final ProductRepository productRepository;
-	private final CategoryRepository categoryRepository;
 
-	public ColorService(ColorRepository colorRepository, ProductRepository productRepository, CategoryRepository categoryRepository) {
+	public ColorService(ColorRepository colorRepository, ProductRepository productRepository) {
 		super();
 		this.colorRepository = colorRepository;
 		this.productRepository = productRepository;
-		this.categoryRepository = categoryRepository;
 	}
 
 	@Override
-	public Color addColor(AddColorRequest request) {
-	    Category category = categoryRepository.findByName(request.getProduct().getCategory().getName());
-	    if (category == null) {
-	        category = new Category(request.getProduct().getCategory().getName());
-	        category = categoryRepository.save(category);
-	    }
+	public Color addColor(AddColorRequest request, Long productId) {
+		Product product = productRepository.findById(productId)
+				.orElseThrow(() -> new ResourcesException("Product not found!"));
+		
+		// Create color from request
+		Color color = createColor(request, product);
+		
+		color = colorRepository.save(color);
 
-	    Product product = productRepository.findByNameAndCategory(request.getProduct().getName(), category);
-	    if (product == null) {
-	        product = new Product(request.getProduct().getName(), request.getProduct().getPrice(), category);
-	        product = productRepository.save(product);
-	    }
-
-	    request.setProduct(product);
-	    return colorRepository.save(createColor(request, product));
+	    return color;
 	}
 
 	

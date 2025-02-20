@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mixer_shops.mixer.model.Color;
@@ -41,9 +42,9 @@ public class ColorController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> addColor(@RequestBody AddColorRequest request){
+	public ResponseEntity<ApiResponse> addColor(@RequestBody AddColorRequest request, @RequestParam Long productId){
 		try {
-			Color color = colorService.addColor(request);
+			Color color = colorService.addColor(request, productId);
 			return ResponseEntity.ok(new ApiResponse("Success!", color));
 		} catch (Exception e) {
 			// TODO: handle exception
