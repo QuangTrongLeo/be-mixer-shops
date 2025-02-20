@@ -87,9 +87,9 @@ public class ProductService implements IProductService{
 	}
 
 	@Override
-	public List<Product> getProductsByCategoryId(Long categoryId) {
+	public List<Product> getProductsByCategory(String name) {
 		// TODO Auto-generated method stub
-		return productRepository.findByCategoryId(categoryId);
+		return productRepository.findByCategory_Name(name);
 	}
 
 	@Override
