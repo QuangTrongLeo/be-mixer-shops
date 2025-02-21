@@ -57,8 +57,8 @@ public class ColorController {
 	@PutMapping("/color/{colorId}/update")
 	public ResponseEntity<ApiResponse> updateColor(@RequestBody UpdateColorRequest request, @PathVariable Long colorId){
 		try {
-			Color color = colorService.updateColor(request, colorId);
-			return ResponseEntity.ok(new ApiResponse("Success!", color));
+			ColorDto colorDto = colorService.updateColor(request, colorId);
+			return ResponseEntity.ok(new ApiResponse("Success!", colorDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));

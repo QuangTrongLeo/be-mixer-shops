@@ -1,12 +1,22 @@
 package mixer_shops.mixer.dto;
 
+import java.util.List;
+
 import lombok.Data;
+import mixer_shops.mixer.model.Size;
 
 @Data
 public class ColorDto {
 	private Long id;
 	private String name;
 	private String hexCode;
+	private List<Size> sizes;
+	public List<Size> getSizes() {
+		return sizes;
+	}
+	public void setSizes(List<Size> sizes) {
+		this.sizes = sizes;
+	}
 	public Long getId() {
 		return id;
 	}

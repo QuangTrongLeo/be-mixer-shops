@@ -47,20 +47,17 @@ public class ColorService implements IColorService{
 	}
 	
 	@Override
-	public Color updateColor(UpdateColorRequest request, Long colorId) {
+	public ColorDto updateColor(UpdateColorRequest request, Long colorId) {
 	    Color color = colorRepository.findById(colorId)
 	            .map(existingColor -> updateExistingColor(existingColor, request))
 	            .map(colorRepository::save)
 	            .orElseThrow(() -> new ResourcesException("Color not found!"));
-	    return color;
+	    return modelMapper.map(color, ColorDto.class);
 	}
 
 	private Color updateExistingColor(Color color, UpdateColorRequest request) {
 	    color.setName(request.getName());
 	    color.setHexCode(request.getHexCode());
-	    
-	    Product updateProduct = productRepository.findFirstByName(request.getProduct().getName());
-	    color.setProduct(updateProduct);
 	    return color;
 	}
 
