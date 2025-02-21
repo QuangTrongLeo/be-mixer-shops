@@ -1,11 +1,18 @@
-package mixer_shops.mixer.request;
+package mixer_shops.mixer.dto;
 
 import lombok.Data;
 
 @Data
-public class AddSizeRequest {
+public class SizeDto {
+	private Long id;
 	private String name;
 	private int inventory;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}

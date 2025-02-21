@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mixer_shops.mixer.dto.SizeDto;
 import mixer_shops.mixer.model.Size;
 import mixer_shops.mixer.request.AddSizeRequest;
 import mixer_shops.mixer.request.UpdateSizeRequest;
@@ -41,10 +43,10 @@ public class SizeController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> addSize(@RequestBody AddSizeRequest request){
+	public ResponseEntity<ApiResponse> addSizeByColorId(@RequestBody AddSizeRequest request, @RequestParam Long colorId){
 		try {
-			Size size = sizeService.addSize(request);
-			return ResponseEntity.ok(new ApiResponse("Success!", size));
+			SizeDto sizeDto = sizeService.addSizeByColorId(request, colorId);
+			return ResponseEntity.ok(new ApiResponse("Success!", sizeDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Error!", null));
