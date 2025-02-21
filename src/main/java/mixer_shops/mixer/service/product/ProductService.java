@@ -12,7 +12,6 @@ import mixer_shops.mixer.model.Category;
 import mixer_shops.mixer.model.Image;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.repository.CategoryRepository;
-import mixer_shops.mixer.repository.ColorRepository;
 import mixer_shops.mixer.repository.ImageRepository;
 import mixer_shops.mixer.repository.ProductRepository;
 import mixer_shops.mixer.request.AddProductRequest;
@@ -23,15 +22,13 @@ public class ProductService implements IProductService{
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
 	private final ImageRepository imageRepository;
-	private final ColorRepository colorRepository;
 	private final ModelMapper modelMapper;
 	
-	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ColorRepository colorRepository, ModelMapper modelMapper) {
+	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ImageRepository imageRepository, ModelMapper modelMapper) {
 		super();
 		this.productRepository = productRepository;
 		this.categoryRepository = categoryRepository;
 		this.imageRepository = imageRepository;
-		this.colorRepository = colorRepository;
 		this.modelMapper = new ModelMapper();
 	}
 

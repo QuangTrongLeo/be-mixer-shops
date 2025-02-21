@@ -43,9 +43,9 @@ public class ColorController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> addColor(@RequestBody AddColorRequest request, @RequestParam Long productId){
+	public ResponseEntity<ApiResponse> addColorByProductId(@RequestBody AddColorRequest request, @RequestParam Long productId){
 		try {
-			ColorDto colorDto = colorService.addColor(request, productId);
+			ColorDto colorDto = colorService.addColorByProductId(request, productId);
 			return ResponseEntity.ok(new ApiResponse("Success!", colorDto));
 		} catch (Exception e) {
 			// TODO: handle exception

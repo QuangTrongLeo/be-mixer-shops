@@ -8,7 +8,7 @@ import mixer_shops.mixer.request.AddColorRequest;
 import mixer_shops.mixer.request.UpdateColorRequest;
 
 public interface IColorService {
-	ColorDto addColor(AddColorRequest request, Long productId);
+	ColorDto addColorByProductId(AddColorRequest request, Long productId);
 	Color getColorById(Long id);
 	Color updateColor(UpdateColorRequest request, Long colorId);
 	void deleteColorById(Long id);

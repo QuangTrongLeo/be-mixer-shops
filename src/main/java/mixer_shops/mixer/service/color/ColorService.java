@@ -1,6 +1,7 @@
 package mixer_shops.mixer.service.color;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class ColorService implements IColorService{
 	}
 
 	@Override
-	public ColorDto addColor(AddColorRequest request, Long productId) {
+	public ColorDto addColorByProductId(AddColorRequest request, Long productId) {
 		Product product = productService.getProductById(productId);
 		Color color = new Color(request.getName(), request.getHexCode(), product);
 		color = colorRepository.save(color);
@@ -71,13 +72,13 @@ public class ColorService implements IColorService{
 		colorRepository.findById(id).ifPresentOrElse(color -> {
 			
 			// Find product by colorId
-			List<Product> products = productRepository.findByColorsId(id);
-			for (Product product : products) {
-				product.getColors().remove(color);
-				productRepository.save(product);
+			Optional<Product> product = productRepository.findByColorsId(id).stream().findFirst();
+			if (product.isPresent()) {
+				Product p = product.get();
+				p.getColors().remove(color);
+				productRepository.save(p);
 			}
 			
-			// Delete color 
 			colorRepository.delete(color);
 			colorRepository.flush();
 		}, () -> { throw new ResourcesException("Color not found!"); });
