@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	List<Product> findByCategory_Name(String name);
 
+	List<Product> findByColorsId(Long colorId);
+
 }

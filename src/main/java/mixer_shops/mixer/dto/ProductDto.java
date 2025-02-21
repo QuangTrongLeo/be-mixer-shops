@@ -4,7 +4,6 @@ import java.util.List;
 
 import lombok.Data;
 import mixer_shops.mixer.model.Category;
-import mixer_shops.mixer.model.Color;
 
 @Data
 public class ProductDto {
@@ -13,7 +12,7 @@ public class ProductDto {
 	private int price;
 	private Category category;
 	private List<ImageDto> images;
-	private List<Color> colors;
+	private List<ColorDto> colors;
 	public Long getId() {
 		return id;
 	}
@@ -44,10 +43,11 @@ public class ProductDto {
 	public void setImages(List<ImageDto> images) {
 		this.images = images;
 	}
-	public List<Color> getColors() {
+	public List<ColorDto> getColors() {
 		return colors;
 	}
-	public void setColors(List<Color> colors) {
+	public void setColors(List<ColorDto> colors) {
 		this.colors = colors;
 	}
+	
 }
