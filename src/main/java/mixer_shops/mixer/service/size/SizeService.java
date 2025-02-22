@@ -37,41 +37,44 @@ public class SizeService implements ISizeService{
 	}
 
 	@Override
-	public Size getSizeById(Long id) {
+	public SizeDto getSizeById(Long id) {
 		// TODO Auto-generated method stub
-		return sizeRepository.findById(id).orElseThrow(() -> new ResourcesException("Size not found!"));
+		Size size = sizeRepository.findById(id).orElseThrow(() -> new ResourcesException("Size not found!"));
+		return modelMapper.map(size, SizeDto.class);
 	}
 
 	@Override
-	public Size updateSize(UpdateSizeRequest request, Long sizeId) {
+	public SizeDto updateSize(UpdateSizeRequest request, Long sizeId) {
 		// TODO Auto-generated method stub
 		Size size = sizeRepository.findById(sizeId)
 			.map(existingSize -> updateExistingSize(existingSize, request))
 			.map(sizeRepository::save)
 			.orElseThrow(() -> new ResourcesException("Size not found!"));
-		return size;
+		return modelMapper.map(size, SizeDto.class);
 	}
 	
 	private Size updateExistingSize(Size size, UpdateSizeRequest request) {
 		size.setName(request.getName());
-		size.setInventory(request.getInventory());
-		
-		Color updateColor = colorRepository.findByName(request.getColor().getName());
-		size.setColor(updateColor);
-		
+		size.setInventory(request.getInventory());		
 		return size;
 	}
 
 	@Override
 	public void deleteSizeById(Long id) {
 		// TODO Auto-generated method stub
-		sizeRepository.findById(id).ifPresentOrElse(sizeRepository::delete, () -> { throw new ResourcesException("Size not found!");});
+		sizeRepository.findById(id).ifPresentOrElse(size -> {
+			sizeRepository.delete(size);
+			sizeRepository.flush();			
+		}, () -> { throw new ResourcesException("Size not found!");});
 	}
 
 	@Override
-	public List<Size> getAllSizes() {
+	public List<SizeDto> getAllSizes() {
 		// TODO Auto-generated method stub
-		return sizeRepository.findAll();
+		List<Size> sizes = sizeRepository.findAll();
+		return sizes.stream()
+				.map(size -> modelMapper
+						.map(size, SizeDto.class)).toList();
 	}
 
 }

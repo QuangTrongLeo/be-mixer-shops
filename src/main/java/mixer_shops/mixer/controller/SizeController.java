@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mixer_shops.mixer.dto.SizeDto;
-import mixer_shops.mixer.model.Size;
 import mixer_shops.mixer.request.AddSizeRequest;
 import mixer_shops.mixer.request.UpdateSizeRequest;
 import mixer_shops.mixer.response.ApiResponse;
@@ -34,8 +33,8 @@ public class SizeController {
 	@GetMapping("/size/{sizeId}")
 	public ResponseEntity<ApiResponse> getSizeById(@PathVariable Long sizeId){
 		try {
-			Size size = sizeService.getSizeById(sizeId);
-			return ResponseEntity.ok(new ApiResponse("Success!", size));
+			SizeDto sizeDto = sizeService.getSizeById(sizeId);
+			return ResponseEntity.ok(new ApiResponse("Success!", sizeDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Error!", null));
@@ -56,8 +55,8 @@ public class SizeController {
 	@PutMapping("/size/{sizeId}/update")
 	public ResponseEntity<ApiResponse> updateSize(@RequestBody UpdateSizeRequest request, @PathVariable Long sizeId){
 		try {
-			Size size = sizeService.updateSize(request, sizeId);
-			return ResponseEntity.ok(new ApiResponse("Success!", size));
+			SizeDto sizeDto = sizeService.updateSize(request, sizeId);
+			return ResponseEntity.ok(new ApiResponse("Success!", sizeDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Error!", null));
@@ -78,8 +77,8 @@ public class SizeController {
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllSizes(){
 		try {
-			List<Size> sizes = sizeService.getAllSizes();
-			return ResponseEntity.ok(new ApiResponse("Success!", sizes));
+			List<SizeDto> sizeDtos = sizeService.getAllSizes();
+			return ResponseEntity.ok(new ApiResponse("Success!", sizeDtos));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
