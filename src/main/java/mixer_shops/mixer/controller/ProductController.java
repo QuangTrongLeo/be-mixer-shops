@@ -94,11 +94,11 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping("/by/category/{categoryName}/products")
-	public ResponseEntity<ApiResponse> getProductsByCategoryId(@PathVariable String categoryName){
+	@GetMapping("/by/category/{categoryId}/products")
+	public ResponseEntity<ApiResponse> getProductsByCategoryId(@PathVariable Long categoryId){
 		try {
-			List<Product> products = productService.getProductsByCategory(categoryName);
-			return ResponseEntity.ok(new ApiResponse("Success!", products));
+			List<ProductDto> productDtos = productService.getProductsByCategory(categoryId);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
@@ -108,8 +108,8 @@ public class ProductController {
 	@GetMapping("/by/{name}/product")
 	public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name){
 		try {
-			List<Product> products = productService.getProductsByName(name);
-			return ResponseEntity.ok(new ApiResponse("Success!", products));
+			List<ProductDto> productDtos = productService.getProductsByName(name);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
