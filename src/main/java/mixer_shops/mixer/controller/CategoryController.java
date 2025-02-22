@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mixer_shops.mixer.model.Category;
+import mixer_shops.mixer.dto.CategoryDto;
+import mixer_shops.mixer.request.AddCategoryRequest;
+import mixer_shops.mixer.request.UpdateCategoryRequest;
 import mixer_shops.mixer.response.ApiResponse;
 import mixer_shops.mixer.service.category.ICategoryService;
 
@@ -30,8 +32,8 @@ public class CategoryController {
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllCategories(){
 		try {
-			List<Category> categories = categoryService.getAllCategories();
-			return ResponseEntity.ok(new ApiResponse("Success!", categories));
+			List<CategoryDto> categoryDaos = categoryService.getAllCategories();
+			return ResponseEntity.ok(new ApiResponse("Success!", categoryDaos));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
@@ -39,32 +41,33 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> addCategory(@RequestBody Category category){
+	public ResponseEntity<ApiResponse> addCategory(@RequestBody AddCategoryRequest request){
 		try {
-			Category newCategory = categoryService.addCategory(category);
-			return ResponseEntity.ok(new ApiResponse("Success!", newCategory)); 
+			CategoryDto newCategoryDto = categoryService.addCategory(request);
+			return ResponseEntity.ok(new ApiResponse("Success!", newCategoryDto)); 
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}
 	
 	@PutMapping("/category/{categoryId}/update")
-	public ResponseEntity<ApiResponse> updateCategory(@RequestBody Category category, @PathVariable Long categoryId){
+	public ResponseEntity<ApiResponse> updateCategory(@RequestBody UpdateCategoryRequest request, @PathVariable Long categoryId){
 		try {
-			Category updateCategory = categoryService.updateCategory(category, categoryId);
-			return ResponseEntity.ok(new ApiResponse("Success!", updateCategory)); 
+			CategoryDto updateCategoryDto = categoryService.updateCategory(request, categoryId);
+			return ResponseEntity.ok(new ApiResponse("Success!", updateCategoryDto)); 
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		} 
 	}
 	
-	@GetMapping("/{categoryId}/category")
+	@GetMapping("/category/{categoryId}")
 	public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long categoryId){
 		try {
-			Category category = categoryService.getCategoryById(categoryId);
-			return ResponseEntity.ok(new ApiResponse("Success!", category)); 
+			CategoryDto categoryDto = categoryService.getCategoryById(categoryId);
+			return ResponseEntity.ok(new ApiResponse("Success!", categoryDto)); 
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
@@ -74,8 +77,8 @@ public class CategoryController {
 	@GetMapping("/{name}/category")
 	public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name){
 		try {
-			Category category = categoryService.getCategoryByName(name);
-			return ResponseEntity.ok(new ApiResponse("Success!", category)); 
+			CategoryDto categoryDto = categoryService.getCategoryByName(name);
+			return ResponseEntity.ok(new ApiResponse("Success!", categoryDto)); 
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));

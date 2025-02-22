@@ -2,60 +2,71 @@ package mixer_shops.mixer.service.category;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import mixer_shops.mixer.exceptions.AlreadyExistsException;
+import mixer_shops.mixer.dto.CategoryDto;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Category;
 import mixer_shops.mixer.repository.CategoryRepository;
+import mixer_shops.mixer.request.AddCategoryRequest;
+import mixer_shops.mixer.request.UpdateCategoryRequest;
 
 @Service
 public class CategoryService implements ICategoryService{
 	private final CategoryRepository categoryRepository;
-	
-	public CategoryService(CategoryRepository categoryRepository) {
+	private final ModelMapper modelMapper;
+
+	public CategoryService(CategoryRepository categoryRepository, ModelMapper modelMapper) {
 		super();
 		this.categoryRepository = categoryRepository;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
-	public Category getCategoryById(Long id) {
+	public CategoryDto getCategoryById(Long id) {
 		// TODO Auto-generated method stub
-		return categoryRepository.findById(id)
+		Category category = categoryRepository.findById(id)
 				.orElseThrow(() -> new ResourcesException("Category not found!"));
+		return modelMapper.map(category, CategoryDto.class);
 	}
 
 	@Override
-	public Category getCategoryByName(String name) {
+	public CategoryDto getCategoryByName(String name) {
 		// TODO Auto-generated method stub
-		return categoryRepository.findByName(name);
+		Category category = categoryRepository.findByName(name);
+		return modelMapper.map(category, CategoryDto.class);
 	}
 
 	@Override
-	public Category addCategory(Category category) {
+	public CategoryDto addCategory(AddCategoryRequest request) {
 		// TODO Auto-generated method stub
-		Category existingCategory = categoryRepository.findByName(category.getName());
-	    if (existingCategory != null) {
-	        throw new AlreadyExistsException("Category already exists!");
+		Category category = categoryRepository.findByName(request.getName());
+	    if (category == null) {
+	    	category = new Category();
+	    	category.setName(request.getName());
+	    	categoryRepository.save(category);
+	    	categoryRepository.flush();
 	    }
-	    return categoryRepository.save(category);
+	    return modelMapper.map(category, CategoryDto.class);
 	}
 
 	@Override
-	public Category updateCategory(Category category, Long categoryId) {
+	public CategoryDto updateCategory(UpdateCategoryRequest request, Long categoryId) {
 		// TODO Auto-generated method stub
 		Category updateCategory = categoryRepository.findById(categoryId)
 				.map(existingCategory -> {
-					existingCategory.setName(category.getName());
+					existingCategory.setName(request.getName());
 					return categoryRepository.save(existingCategory);
 				}).orElseThrow(() -> new ResourcesException("Category not found!"));
-		return updateCategory;
+		return modelMapper.map(updateCategory, CategoryDto.class);
 	}
 
 	@Override
-	public List<Category> getAllCategories() {
+	public List<CategoryDto> getAllCategories() {
 		// TODO Auto-generated method stub
-		return categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAll();
+		return categories.stream().map(category -> modelMapper.map(category, CategoryDto.class)).toList();
 	}
 
 	@Override
