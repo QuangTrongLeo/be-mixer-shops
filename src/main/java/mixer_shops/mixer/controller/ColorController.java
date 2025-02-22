@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mixer_shops.mixer.dto.ColorDto;
-import mixer_shops.mixer.model.Color;
 import mixer_shops.mixer.request.AddColorRequest;
 import mixer_shops.mixer.request.UpdateColorRequest;
 import mixer_shops.mixer.response.ApiResponse;
@@ -79,8 +78,8 @@ public class ColorController {
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllColors(){
 		try {
-			List<Color> colors = colorService.getAllColors();
-			return ResponseEntity.ok(new ApiResponse("Success!", colors));
+			List<ColorDto> colorDtos = colorService.getAllColors();
+			return ResponseEntity.ok(new ApiResponse("Success!", colorDtos));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));

@@ -83,9 +83,12 @@ public class ColorService implements IColorService{
 	}
 
 	@Override
-	public List<Color> getAllColors() {
+	public List<ColorDto> getAllColors() {
 		// TODO Auto-generated method stub
-		return colorRepository.findAll();
+		List<Color> colors = colorRepository.findAll();
+		return colors.stream()
+				.map(color -> modelMapper.map(color, ColorDto.class))
+				.toList();
 	}
 
 }
