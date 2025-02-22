@@ -17,7 +17,7 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int totalAmount = 0;
+	private int totalAmount;
 	
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CartItem> cartItems = new HashSet<CartItem>();
@@ -70,5 +70,21 @@ public class Cart {
 		this.user = user;
 	}
 	
+	public void addItem(CartItem item) {
+		this.cartItems.add(item);
+		item.setCart(this);
+		updateTotalAmount();
+	}
 	
+	public void removeItem(CartItem item) {
+		this.cartItems.remove(item);
+		item.setCart(null);
+		updateTotalAmount();
+	}
+	
+	public void updateTotalAmount() {
+		this.totalAmount = cartItems.stream()
+				.mapToInt(item -> item.getPrice() * item.getQuantity())
+				.sum();
+	}
 }
