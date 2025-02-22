@@ -14,26 +14,24 @@ import mixer_shops.mixer.repository.ColorRepository;
 import mixer_shops.mixer.repository.ProductRepository;
 import mixer_shops.mixer.request.AddColorRequest;
 import mixer_shops.mixer.request.UpdateColorRequest;
-import mixer_shops.mixer.service.product.IProductService;
 
 @Service
 public class ColorService implements IColorService{
 	private final ColorRepository colorRepository;
 	private final ProductRepository productRepository;
-	private final IProductService productService;
 	private final ModelMapper modelMapper;
 
-	public ColorService(ColorRepository colorRepository, ProductRepository productRepository, IProductService productService, ModelMapper modelMapper) {
+	public ColorService(ColorRepository colorRepository, ProductRepository productRepository, ModelMapper modelMapper) {
 		super();
 		this.colorRepository = colorRepository;
 		this.productRepository = productRepository;
-		this.productService = productService;
 		this.modelMapper = modelMapper;
 	}
 
+
 	@Override
 	public ColorDto addColorByProductId(AddColorRequest request, Long productId) {
-		Product product = productService.getProductById(productId);
+		Product product = productRepository.findById(productId).orElseThrow(() -> new ResourcesException("Product not found!"));
 		Color color = new Color(request.getName(), request.getHexCode(), product);
 		color = colorRepository.save(color);
 		return modelMapper.map(color, ColorDto.class);

@@ -9,7 +9,7 @@ import mixer_shops.mixer.request.UpdateProductRequest;
 
 public interface IProductService {
 	Product addProduct(AddProductRequest request);
-	Product getProductById(Long id);
+	ProductDto getProductById(Long id);
 	Product updateProduct(UpdateProductRequest request, Long productId);
 	void deleteProductById(Long id);
 	List<Product> getAllProducts();

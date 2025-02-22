@@ -34,9 +34,8 @@ public class ProductController {
 	@GetMapping("/product/{productId}")
 	public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
 		try {
-			Product product = productService.getProductById(productId);
-			ProductDto convertProduct = productService.convertoDto(product);
-			return ResponseEntity.ok(new ApiResponse("Success!", convertProduct));
+			ProductDto productDto = productService.getProductById(productId);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));

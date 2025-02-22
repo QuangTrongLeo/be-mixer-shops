@@ -57,10 +57,11 @@ public class ProductService implements IProductService{
 	}
 
 	@Override
-	public Product getProductById(Long id) {
+	public ProductDto getProductById(Long id) {
 		// TODO Auto-generated method stub
-		return productRepository.findById(id)
+		Product product = productRepository.findById(id)
 				.orElseThrow(() -> new ResourcesException("Product not found!"));
+		return convertoDto(product);
 	}
 
 	@Override
@@ -125,11 +126,6 @@ public class ProductService implements IProductService{
 		List<ImageDto> imageDtos = images.stream()
 				.map(image -> modelMapper.map(image, ImageDto.class)).toList();
 		productDto.setImages(imageDtos);
-//		
-//		List<Color> colors = colorRepository.findByProductId(product.getId());
-//		List<ColorDto> colorDtos = colors.stream()
-//				.map(color -> modelMapper.map(color, ColorDto.class)).toList();
-//		productDto.setColors(colorDtos);
 		return productDto;
 	}
 }

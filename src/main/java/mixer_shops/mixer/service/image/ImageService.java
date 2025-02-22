@@ -15,17 +15,17 @@ import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Image;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.repository.ImageRepository;
-import mixer_shops.mixer.service.product.IProductService;
+import mixer_shops.mixer.repository.ProductRepository;
 
 @Service
 public class ImageService implements IImageService{
 	private final ImageRepository imageRepository;
-	private final IProductService productService;
+	private final ProductRepository productRepository;
 
-	public ImageService(ImageRepository imageRepository, IProductService productService) {
+	public ImageService(ImageRepository imageRepository, ProductRepository productRepository) {
 		super();
 		this.imageRepository = imageRepository;
-		this.productService = productService;
+		this.productRepository = productRepository;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ImageService implements IImageService{
 	@Override
 	public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
 		// TODO Auto-generated method stub
-		Product product = productService.getProductById(productId);
+		Product product = productRepository.findById(productId).orElseThrow(() -> new ResourcesException("Product not found!"));
 		List<ImageDto> saveImageDtos = new ArrayList<ImageDto>();
 		for (MultipartFile file : files) {
 			try {
