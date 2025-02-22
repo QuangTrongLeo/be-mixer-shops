@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mixer_shops.mixer.dto.ProductDto;
@@ -43,10 +44,10 @@ public class ProductController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest request){
+	public ResponseEntity<ApiResponse> addProductByCategoryId(@RequestBody AddProductRequest request, @RequestParam Long categoryId){
 		try {
-			Product product = productService.addProduct(request);
-			return ResponseEntity.ok(new ApiResponse("Success!", product));
+			ProductDto productDto = productService.addProductByCategoryId(request, categoryId);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
@@ -56,8 +57,8 @@ public class ProductController {
 	@PutMapping("/product/{productId}/update")
 	public ResponseEntity<ApiResponse> updateProduct(@RequestBody UpdateProductRequest request, @PathVariable Long productId){
 		try {
-			Product product = productService.updateProduct(request, productId);
-			return ResponseEntity.ok(new ApiResponse("Success!", product));
+			ProductDto productDto = productService.updateProduct(request, productId);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));

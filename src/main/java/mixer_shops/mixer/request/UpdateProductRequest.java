@@ -1,26 +1,12 @@
 package mixer_shops.mixer.request;
 
-import java.util.List;
-
 import lombok.Data;
-import mixer_shops.mixer.model.Category;
-import mixer_shops.mixer.model.Color;
-import mixer_shops.mixer.model.Image;
 
 @Data
 public class UpdateProductRequest {
-	private Long id;
 	private String name;
 	private int price;
-	private Category category;
-	private List<Image> images;
-	private List<Color> colors;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -33,22 +19,5 @@ public class UpdateProductRequest {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public Category getCategory() {
-		return category;
-	}
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	public List<Image> getImages() {
-		return images;
-	}
-	public void setImages(List<Image> images) {
-		this.images = images;
-	}
-	public List<Color> getColors() {
-		return colors;
-	}
-	public void setColors(List<Color> colors) {
-		this.colors = colors;
-	}
+
 }

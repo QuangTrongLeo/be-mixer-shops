@@ -33,18 +33,15 @@ public class ProductService implements IProductService{
 	}
 
 	@Override
-	public Product addProduct(AddProductRequest request) {
+	public ProductDto addProductByCategoryId(AddProductRequest request, Long categoryId) {
 		// TODO Auto-generated method stub
 		// check if the category is found in the DB
 		// if yes, set it as the new product category
 		// The set as the new product category
-		Category category = categoryRepository.findByName(request.getCategory().getName());
-	    if (category == null) {
-	        category = new Category(request.getCategory().getName());
-	        category = categoryRepository.save(category);
-	    }
-	    request.setCategory(category);
-	    return productRepository.save(createProduct(request, category));
+		Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourcesException("Category not found!"));
+		Product product = createProduct(request, category);
+		productRepository.save(product);
+	    return convertoDto(product);
 	}
 	
 	private Product createProduct(AddProductRequest request, Category category) {
@@ -68,31 +65,24 @@ public class ProductService implements IProductService{
 	public void deleteProductById(Long id) {
 		// TODO Auto-generated method stub
 		productRepository.findById(id)
-			.ifPresentOrElse(product -> {
-				product.setCategory(null);
-				productRepository.save(product);
-				productRepository.delete(product);
-			}, () -> { 
+			.ifPresentOrElse(productRepository::delete, () -> { 
 				throw new ResourcesException("Product not found!"); 
 			});
 	}
 
 	@Override
-	public Product updateProduct(UpdateProductRequest request, Long productId) {
+	public ProductDto updateProduct(UpdateProductRequest request, Long productId) {
 		// TODO Auto-generated method stub
 		Product product = productRepository.findById(productId)
 				.map(existingProduct -> updateExistingProduct(existingProduct, request))
 				.map(productRepository::save)
 				.orElseThrow(() -> new ResourcesException("Product not found!"));
-		return product;
+		return convertoDto(product);
 	}
 	
 	private Product updateExistingProduct(Product product, UpdateProductRequest request) {
 		product.setName(request.getName());
 		product.setPrice(request.getPrice());
-		
-		Category updateCategory = categoryRepository.findByName(request.getCategory().getName());
-		product.setCategory(updateCategory);
 		return product;
 	}
 
