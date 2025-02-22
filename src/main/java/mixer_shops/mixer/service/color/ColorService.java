@@ -41,9 +41,10 @@ public class ColorService implements IColorService{
 
 
 	@Override
-	public Color getColorById(Long id) {
+	public ColorDto getColorById(Long id) {
 		// TODO Auto-generated method stub
-		return colorRepository.findById(id).orElseThrow(() -> new ResourcesException("Color not found!"));
+		Color color = colorRepository.findById(id).orElseThrow(() -> new ResourcesException("Color not found!"));
+		return modelMapper.map(color, ColorDto.class);
 	}
 	
 	@Override

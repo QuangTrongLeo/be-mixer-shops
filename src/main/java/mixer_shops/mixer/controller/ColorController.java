@@ -34,8 +34,8 @@ public class ColorController {
 	@GetMapping("/color/{colorId}")
 	public ResponseEntity<ApiResponse> getColorById(@PathVariable Long colorId){
 		try {
-			Color color = colorService.getColorById(colorId);
-			return ResponseEntity.ok(new ApiResponse("Success!", color));
+			ColorDto colorDto = colorService.getColorById(colorId);
+			return ResponseEntity.ok(new ApiResponse("Success!", colorDto));
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Error!", null));
