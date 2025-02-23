@@ -6,4 +6,5 @@ public interface ICartService {
 	CartDto getCart(Long cartId);
 	int getTotalPrice(Long cartId);
 	void clearCart(Long cartId);
+	Long initializeNewCart();
 }

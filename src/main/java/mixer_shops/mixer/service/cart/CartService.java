@@ -1,5 +1,7 @@
 package mixer_shops.mixer.service.cart;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import mixer_shops.mixer.repository.CartRepository;
 public class CartService implements ICartService{
 	private final CartRepository cartRepository;
 	private final CartItemRepository cartItemRepository;
+	private final AtomicLong cartIdGenerator = new AtomicLong(0);
 	private final ModelMapper modelMapper;
 
 	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, ModelMapper modelMapper) {
@@ -49,6 +52,14 @@ public class CartService implements ICartService{
 		cartRepository.save(cart);
 		cartItemRepository.deleteAllByCartId(cartId);
 		cartRepository.deleteById(cartId);
+	}
+	
+	@Override
+	public Long initializeNewCart() {
+		Cart newCart = new Cart();
+		Long newCartId = cartIdGenerator.incrementAndGet();
+		newCart.setId(newCartId);
+		return cartRepository.save(newCart).getId();
 	}
 
 }

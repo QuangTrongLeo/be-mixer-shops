@@ -57,7 +57,7 @@ public class CartItemService implements ICartItemService{
 
 
 	@Override
-	public void updateItemToCart(Long cartId, Long productId, int quantity) {
+	public void updateItemQuantity(Long cartId, Long productId, int quantity) {
 		// TODO Auto-generated method stub
 		Cart cart = cartRepository.findById(cartId)
 	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
@@ -79,12 +79,18 @@ public class CartItemService implements ICartItemService{
 		// TODO Auto-generated method stub
 		Cart cart = cartRepository.findById(cartId)
 	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
-		CartItem cartItem = cart.getCartItems().stream()
-				.filter(item -> item.getProduct().getId().equals(productId))
-				.findFirst()
-				.orElseThrow(() -> new ResourcesException("Product not found!"));
+		CartItem cartItem = getCartItem(cartId, productId);
 		cart.removeItem(cartItem);
 		cartRepository.save(cart);
+	}
+	
+	@Override
+	public CartItem getCartItem(Long cartId, Long productId) {
+		Cart cart = cartRepository.findById(cartId)
+	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
+		CartItem cartItem = cart.getCartItems().stream().filter(item -> item.getProduct().getId().equals(productId))
+				.findFirst().orElseThrow(() -> new ResourcesException("Item not found!"));
+		return cartItem;
 	}
 
 }
