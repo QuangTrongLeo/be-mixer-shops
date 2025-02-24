@@ -1,8 +1,6 @@
 package mixer_shops.mixer.dto;
 
 import lombok.Data;
-import mixer_shops.mixer.model.Cart;
-import mixer_shops.mixer.model.Product;
 
 @Data
 public class CartItemDto {
@@ -10,8 +8,8 @@ public class CartItemDto {
 	private int quantity;
 	private int price;
 	private int totalPrice;
-	private Product product;
-	private Cart cart;
+	private ProductDto product;
+//	private CartDto cart;
 	public Long getId() {
 		return id;
 	}
@@ -36,17 +34,18 @@ public class CartItemDto {
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	public Product getProduct() {
+	public ProductDto getProduct() {
 		return product;
 	}
-	public void setProduct(Product product) {
+	public void setProduct(ProductDto product) {
 		this.product = product;
 	}
-	public Cart getCart() {
-		return cart;
-	}
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+//	public CartDto getCart() {
+//		return cart;
+//	}
+//	public void setCart(CartDto cart) {
+//		this.cart = cart;
+//	}
+	
 	
 }

@@ -2,6 +2,8 @@ package mixer_shops.mixer.service.cart;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Cart;
 import mixer_shops.mixer.model.CartItem;
@@ -24,37 +26,41 @@ public class CartItemService implements ICartItemService{
 		this.cartRepository = cartRepository;
 	}
 
-
 	@Override
+	@Transactional
 	public void addItemToCart(Long cartId, Long productId, int quantity) {
-	    Cart cart = cartRepository.findById(cartId)
-	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
-	    Product product = productRepository.findById(productId)
-	            .orElseThrow(() -> new ResourcesException("Product not found!"));
+	    try {
+	    	Cart cart = cartRepository.findById(cartId)
+		            .orElseThrow(() -> new ResourcesException("Cart not found!"));
+		    Product product = productRepository.findById(productId)
+		            .orElseThrow(() -> new ResourcesException("Product not found!"));
 
-	    CartItem cartItem = cart.getCartItems()
-	            .stream()
-	            .filter(item -> item.getProduct().getId().equals(productId))
-	            .findFirst().orElse(null);
+		    CartItem cartItem = cart.getCartItems()
+		            .stream()
+		            .filter(item -> item.getProduct().getId().equals(productId))
+		            .findFirst().orElse(null);
 
-	    if (cartItem == null) {
-	        cartItem = new CartItem();
-	        cartItem.setCart(cart);
-	        cartItem.setProduct(product);
-	        cartItem.setQuantity(quantity);
-	        cartItem.setPrice(product.getPrice());
-	        cart.addItem(cartItem);
-	    } else {
-	        cartItem.setQuantity(cartItem.getQuantity() + quantity);
-	    }
+		    if (cartItem == null) {
+		        cartItem = new CartItem();
+		        cartItem.setCart(cart);
+		        cartItem.setProduct(product);
+		        cartItem.setQuantity(quantity);
+		        cartItem.setPrice(product.getPrice());
+		        cart.addItem(cartItem);
+		    } else {
+		        cartItem.setQuantity(cartItem.getQuantity() + quantity);
+		    }
 
-	    // Cập nhật lại tổng giá
-	    cartItem.setTotalPrice(cartItem.getPrice() * cartItem.getQuantity());
-	    
-	    cartItemRepository.save(cartItem);
-	    cartRepository.save(cart);
+		    // Cập nhật lại tổng giá
+		    cartItem.setTotalPrice(cartItem.getPrice() * cartItem.getQuantity());
+		    
+		    cartItemRepository.save(cartItem);
+		    cartRepository.save(cart);
+		} catch (OptimisticLockException e) {
+			// TODO: handle exception
+			throw new ResourcesException("Optimistic Locking failure occurred! Please try again.");
+		}
 	}
-
 
 	@Override
 	public void updateItemQuantity(Long cartId, Long productId, int quantity) {

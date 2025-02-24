@@ -4,14 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Data;
-import mixer_shops.mixer.model.CartItem;
 import mixer_shops.mixer.model.User;
 
 @Data
 public class CartDto {
 	private Long id;
 	private int totalAmount;
-	private Set<CartItem> cartItems = new HashSet<CartItem>();
+	private Set<CartItemDto> cartItems = new HashSet<CartItemDto>();
 	private User user;
 	public Long getId() {
 		return id;
@@ -25,10 +24,10 @@ public class CartDto {
 	public void setTotalAmount(int totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public Set<CartItem> getCartItems() {
+	public Set<CartItemDto> getCartItems() {
 		return cartItems;
 	}
-	public void setCartItems(Set<CartItem> cartItems) {
+	public void setCartItems(Set<CartItemDto> cartItems) {
 		this.cartItems = cartItems;
 	}
 	public User getUser() {

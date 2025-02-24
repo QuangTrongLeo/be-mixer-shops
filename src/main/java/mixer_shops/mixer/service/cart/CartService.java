@@ -1,6 +1,6 @@
 package mixer_shops.mixer.service.cart;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.HashSet;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import mixer_shops.mixer.dto.CartDto;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Cart;
+import mixer_shops.mixer.model.CartItem;
 import mixer_shops.mixer.repository.CartItemRepository;
 import mixer_shops.mixer.repository.CartRepository;
 
@@ -15,7 +16,6 @@ import mixer_shops.mixer.repository.CartRepository;
 public class CartService implements ICartService{
 	private final CartRepository cartRepository;
 	private final CartItemRepository cartItemRepository;
-	private final AtomicLong cartIdGenerator = new AtomicLong(0);
 	private final ModelMapper modelMapper;
 
 	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, ModelMapper modelMapper) {
@@ -57,9 +57,10 @@ public class CartService implements ICartService{
 	@Override
 	public Long initializeNewCart() {
 		Cart newCart = new Cart();
-		Long newCartId = cartIdGenerator.incrementAndGet();
-		newCart.setId(newCartId);
-		return cartRepository.save(newCart).getId();
+		newCart.setTotalAmount(0);
+		newCart.setCartItems(new HashSet<CartItem>());
+		Cart saveCart = cartRepository.save(newCart);
+		return saveCart.getId();
 	}
 
 }

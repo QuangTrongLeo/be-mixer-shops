@@ -26,7 +26,7 @@ public class CartItemController {
 		this.cartService = cartService;
 	}
 
-	@PostMapping("/item/add-to-cart")
+	@PostMapping("/item/add")
 	public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId, 
 													@RequestParam Long productId, 
 													@RequestParam int quantity){
@@ -38,6 +38,7 @@ public class CartItemController {
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}
