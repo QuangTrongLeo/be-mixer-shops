@@ -89,7 +89,11 @@ public class CartItemService implements ICartItemService{
 	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
 		CartItem cartItem = getCartItem(cartId, productId);
 		cart.removeItem(cartItem);
-		cartRepository.save(cart);
+		if (cart.getCartItems().isEmpty()) {
+			cartRepository.delete(cart);
+		} else {
+			cartRepository.save(cart);
+		}	
 	}
 	
 	@Override
