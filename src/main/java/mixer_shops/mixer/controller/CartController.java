@@ -44,6 +44,17 @@ public class CartController {
 		}
 	}
 	
+	@GetMapping("/{cartId}/total-quantity")
+	public ResponseEntity<ApiResponse> getTotalQuantity(@PathVariable Long cartId) {
+		try {
+			int totalQuantity = cartService.getTotalQuantity(cartId);
+			return ResponseEntity.ok(new ApiResponse("Success!", totalQuantity));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
+		}
+	}
+	
 	@DeleteMapping("/{cartId}/clear")
 	public ResponseEntity<ApiResponse> clearCart(@PathVariable Long cartId) {
 		try {

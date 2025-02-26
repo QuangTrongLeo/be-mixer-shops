@@ -43,6 +43,16 @@ public class CartService implements ICartService{
 				.mapToInt(item -> item.getPrice() * item.getQuantity())
 				.sum();
 	}
+	
+	@Override
+	public int getTotalQuantity(Long cartId) {
+		// TODO Auto-generated method stub
+		CartDto cartDto = getCart(cartId);
+		return cartDto.getCartItems()
+				.stream()
+				.mapToInt(item -> item.getQuantity())
+				.sum();
+	}
 
 	@Override
 	public void clearCart(Long cartId) {
