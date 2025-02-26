@@ -40,12 +40,6 @@ public class CartItemDto {
 	public void setProduct(ProductDto product) {
 		this.product = product;
 	}
-//	public CartDto getCart() {
-//		return cart;
-//	}
-//	public void setCart(CartDto cart) {
-//		this.cart = cart;
-//	}
 	
 	
 }
