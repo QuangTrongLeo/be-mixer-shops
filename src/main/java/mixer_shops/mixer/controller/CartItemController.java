@@ -52,6 +52,7 @@ public class CartItemController {
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}
@@ -64,6 +65,7 @@ public class CartItemController {
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 		// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}

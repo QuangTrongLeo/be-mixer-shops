@@ -87,8 +87,12 @@ public class Cart {
 	}
 	
 	public void updateTotalAmount() {
-		this.totalAmount = cartItems.stream()
-				.mapToInt(item -> item.getPrice() * item.getQuantity())
-				.sum();
+	    this.totalAmount = cartItems.stream()
+	        .mapToInt(item -> {
+	        	item.setTotalPrice();
+	        	return item.getTotalPrice();
+	        })
+	        .sum();
 	}
+
 }

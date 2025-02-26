@@ -38,21 +38,19 @@ public class CartItemService implements ICartItemService{
 		    CartItem cartItem = cart.getCartItems()
 		            .stream()
 		            .filter(item -> item.getProduct().getId().equals(productId))
-		            .findFirst().orElse(null);
+		            .findFirst().orElse(new CartItem());
 
-		    if (cartItem == null) {
-		        cartItem = new CartItem();
+		    if (cartItem.getId() == null) {
 		        cartItem.setCart(cart);
 		        cartItem.setProduct(product);
-		        cartItem.setQuantity(quantity);
+		        cartItem.setQuantity(quantity);    
 		        cartItem.setPrice(product.getPrice());
-		        cart.addItem(cartItem);
 		    } else {
 		        cartItem.setQuantity(cartItem.getQuantity() + quantity);
 		    }
-
-		    // Cập nhật lại tổng giá
-		    cartItem.setTotalPrice(cartItem.getPrice() * cartItem.getQuantity());
+		    
+		    cartItem.setTotalPrice();
+		    cart.addItem(cartItem);
 		    
 		    cartItemRepository.save(cartItem);
 		    cartRepository.save(cart);
@@ -67,16 +65,20 @@ public class CartItemService implements ICartItemService{
 		// TODO Auto-generated method stub
 		Cart cart = cartRepository.findById(cartId)
 	            .orElseThrow(() -> new ResourcesException("Cart not found!"));
-		cart.getCartItems().stream()
-				.filter(item -> item.getProduct().getId().equals(productId))
-				.findFirst()
-				.ifPresent(item -> {
-					item.setQuantity(quantity);
-					item.setPrice(item.getProduct().getPrice());
-					item.setTotalPrice(item.getPrice() * item.getQuantity());
-				});
-		int totalAmount = cart.getTotalAmount();
+		
+		CartItem cartItem = cart.getCartItems().stream()
+	            .filter(item -> item.getProduct().getId().equals(productId))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourcesException("CartItem not found!"));
+		
+		cartItem.setQuantity(quantity);
+		cartItem.setTotalPrice();
+		
+		int totalAmount = cart.getCartItems()
+				.stream().mapToInt(CartItem::getTotalPrice).sum();
 		cart.setTotalAmount(totalAmount);
+		
+		cartItemRepository.save(cartItem);
 		cartRepository.save(cart);
 	}
 

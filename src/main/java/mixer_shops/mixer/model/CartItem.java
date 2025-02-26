@@ -67,8 +67,8 @@ public class CartItem {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalPrice() {
+		this.totalPrice = this.price * this.quantity;
 	}
 
 	public Product getProduct() {
