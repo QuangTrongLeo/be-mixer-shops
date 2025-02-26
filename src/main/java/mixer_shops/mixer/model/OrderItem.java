@@ -22,14 +22,24 @@ public class OrderItem {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	 @ManyToOne
+	 @JoinColumn(name = "color_id")
+	 private Color color;
+	    
+	 @ManyToOne
+	 @JoinColumn(name = "size_id")
+	 private Size size;
 
-	public OrderItem(Long id, int quantity, int price, Order order, Product product) {
+	public OrderItem(Long id, int quantity, int price, Order order, Product product, Color color, Size size) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.price = price;
 		this.order = order;
 		this.product = product;
+		this.color = color;
+		this.size = size;
 	}
 
 	public OrderItem() {
@@ -75,5 +85,22 @@ public class OrderItem {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+	
 	
 }

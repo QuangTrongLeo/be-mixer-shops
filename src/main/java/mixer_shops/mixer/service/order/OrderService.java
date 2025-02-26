@@ -1,5 +1,7 @@
 package mixer_shops.mixer.service.order;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,41 +9,65 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import mixer_shops.mixer.dto.OrderDto;
+import mixer_shops.mixer.enums.OrderStatus;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Cart;
+import mixer_shops.mixer.model.Color;
 import mixer_shops.mixer.model.Order;
 import mixer_shops.mixer.model.OrderItem;
 import mixer_shops.mixer.model.Product;
 import mixer_shops.mixer.model.Size;
+import mixer_shops.mixer.repository.CartRepository;
 import mixer_shops.mixer.repository.OrderRepository;
+import mixer_shops.mixer.service.cart.CartService;
 
 @Service
 public class OrderService implements IOrderService{
 	private final OrderRepository orderRepository;
+	private final CartRepository cartRepository;
+	private final CartService cartService;
 	private final ModelMapper modelMapper;
-	
-	public OrderService(OrderRepository orderRepository, ModelMapper modelMapper) {
+
+
+	public OrderService(OrderRepository orderRepository, CartRepository cartRepository, CartService cartService,
+			ModelMapper modelMapper) {
 		super();
 		this.orderRepository = orderRepository;
+		this.cartRepository = cartRepository;
+		this.cartService = cartService;
 		this.modelMapper = modelMapper;
 	}
 
 	@Override
 	public OrderDto placeOrder(Long userId) {
 		// TODO Auto-generated method stub
-		return null;
+		Cart cart = cartRepository.findByUserId(userId);
+		Order order = createOrder(cart);
+		List<OrderItem> orderItems = createOrderItems(order, cart);
+		order.setOrderItems(new HashSet<OrderItem>(orderItems));
+		order.setTotalAmount(calculateTotalAmount(orderItems));
+		
+		Order saveOrder = orderRepository.save(order);
+		
+		cartService.clearCart(cart.getId());
+		
+		return modelMapper.map(saveOrder, OrderDto.class);
+	}
+	
+	private Order createOrder(Cart cart) {
+		Order order = new Order();
+		order.setUser(cart.getUser());
+		order.setOrderStatus(OrderStatus.PENDING);
+		order.setOrderDate(LocalDate.now());
+		return order;
 	}
 	
 	private List<OrderItem> createOrderItems(Order order, Cart cart) {
 	    List<OrderItem> orderItems = cart.getCartItems().stream().map(cartItem -> {
 	        Product product = cartItem.getProduct();
 	        
-	        // Duyệt qua các màu sắc (Color) của sản phẩm
 	        product.getColors().forEach(color -> {
-	            // Duyệt qua các kích cỡ (Size) của mỗi màu sắc
 	            color.getSizes().forEach(size -> {
-	                // Cập nhật số lượng tồn kho (inventory) của mỗi kích cỡ
-	                // Giảm số lượng tồn kho theo số lượng trong giỏ hàng
 	                size.setInventory(size.getInventory() - cartItem.getQuantity());
 	            });
 	        });
@@ -50,11 +76,17 @@ public class OrderService implements IOrderService{
 	        OrderItem orderItem = new OrderItem();
 	        orderItem.setProduct(product);
 	        orderItem.setQuantity(cartItem.getQuantity());
-	        orderItem.setPrice(product.getPrice()); // Lấy giá sản phẩm
-	        orderItem.setOrder(order); // Gắn đơn hàng vào OrderItem
+	        orderItem.setPrice(product.getPrice());
+	        orderItem.setOrder(order);
+	        
+	        Color selectedColor = cartItem.getColor();
+	        Size selectedSize = cartItem.getSize();
+	        
+	        orderItem.setColor(selectedColor);
+	        orderItem.setSize(selectedSize);
 	        
 	        return orderItem;
-	    }).collect(Collectors.toList()); // Chuyển đổi thành danh sách OrderItem
+	    }).collect(Collectors.toList());
 
 	    return orderItems;
 	}
