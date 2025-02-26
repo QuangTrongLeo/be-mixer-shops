@@ -6,13 +6,12 @@ import lombok.Data;
 import mixer_shops.mixer.model.Category;
 
 @Data
-public class ProductDto {
+public class ProductSummaryDto {
 	private Long id;
-	private String name;
-	private int price;
-	private Category category;
-	private List<ImageDto> images;
-	private List<ColorDto> colors;
+    private String name;
+    private int price;
+    private Category category;
+    private List<ImageDto> images;
 	public Long getId() {
 		return id;
 	}
@@ -43,21 +42,5 @@ public class ProductDto {
 	public void setImages(List<ImageDto> images) {
 		this.images = images;
 	}
-	public List<ColorDto> getColors() {
-		return colors;
-	}
-	public void setColors(List<ColorDto> colors) {
-		this.colors = colors;
-	}
-	
-	public ProductSummaryDto getProductSummary() {
-        ProductSummaryDto summary = new ProductSummaryDto();
-        summary.setId(this.id);
-        summary.setName(this.name);
-        summary.setPrice(this.price);
-        summary.setCategory(this.category);
-        summary.setImages(this.images);
-        return summary;
-    }
-	
+    
 }

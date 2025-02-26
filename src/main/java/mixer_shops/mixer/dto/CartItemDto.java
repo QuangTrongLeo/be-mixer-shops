@@ -8,8 +8,10 @@ public class CartItemDto {
 	private int quantity;
 	private int price;
 	private int totalPrice;
-	private ProductDto product;
-//	private CartDto cart;
+	private ProductSummaryDto product;
+	private ColorSummaryDto color;
+	private SizeDto size;
+	
 	public Long getId() {
 		return id;
 	}
@@ -34,11 +36,23 @@ public class CartItemDto {
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	public ProductDto getProduct() {
+	public ProductSummaryDto getProduct() {
 		return product;
 	}
-	public void setProduct(ProductDto product) {
+	public void setProduct(ProductSummaryDto product) {
 		this.product = product;
+	}
+	public ColorSummaryDto getColor() {
+		return color;
+	}
+	public void setColor(ColorSummaryDto color) {
+		this.color = color;
+	}
+	public SizeDto getSize() {
+		return size;
+	}
+	public void setSize(SizeDto size) {
+		this.size = size;
 	}
 	
 	

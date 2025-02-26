@@ -29,12 +29,14 @@ public class CartItemController {
 	@PostMapping("/item/add")
 	public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId, 
 													@RequestParam Long productId, 
+													@RequestParam Long colorId,
+													@RequestParam Long sizeId,
 													@RequestParam int quantity){
 		try {
 			if (cartId == null) {
 				cartId = cartService.initializeNewCart();
 			}
-			cartItemService.addItemToCart(cartId, productId, quantity);
+			cartItemService.addItemToCart(cartId, productId, colorId, sizeId, quantity);
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -43,12 +45,14 @@ public class CartItemController {
 		}
 	}
 	
-	@PutMapping("/cart/{cartId}/item/{itemId}/update")
+	@PutMapping("/cart/{cartId}/item/{itemId}/color/{colorId}/size/{sizeId}/update")
 	public ResponseEntity<ApiResponse> updateItemQuantity(@PathVariable Long cartId, 
-													@PathVariable Long itemId, 
+													@PathVariable Long itemId,
+													@PathVariable Long colorId,
+													@PathVariable Long sizeId,
 													@RequestParam int quantity){
 		try {
-			cartItemService.updateItemQuantity(cartId, itemId, quantity);
+			cartItemService.updateItemQuantity(cartId, itemId, colorId, sizeId, quantity);
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -57,11 +61,13 @@ public class CartItemController {
 		}
 	}
 	
-	@DeleteMapping("/cart/{cartId}/item/{itemId}/remove")
+	@DeleteMapping("/cart/{cartId}/item/{itemId}/color/{colorId}/size/{sizeId}/remove")
 	public ResponseEntity<ApiResponse> removeItemToCart(@PathVariable Long cartId, 
-													@PathVariable Long itemId) {
+													@PathVariable Long itemId,
+													@PathVariable Long colorId,
+													@PathVariable Long sizeId) {
 		try {
-			cartItemService.removeItemToCart(cartId, itemId);
+			cartItemService.removeItemToCart(cartId, itemId, colorId, sizeId);
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 		// TODO: handle exception

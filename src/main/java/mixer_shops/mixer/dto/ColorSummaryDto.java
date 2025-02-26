@@ -1,22 +1,12 @@
 package mixer_shops.mixer.dto;
 
-import java.util.List;
-
 import lombok.Data;
 
 @Data
-public class ColorDto {
+public class ColorSummaryDto {
 	private Long id;
 	private String name;
 	private String hexCode;
-	private List<SizeDto> sizes;
-	
-	public List<SizeDto> getSizes() {
-		return sizes;
-	}
-	public void setSizes(List<SizeDto> sizes) {
-		this.sizes = sizes;
-	}
 	public Long getId() {
 		return id;
 	}
@@ -34,13 +24,5 @@ public class ColorDto {
 	}
 	public void setHexCode(String hexCode) {
 		this.hexCode = hexCode;
-	}
-	
-	public ColorSummaryDto getColorSummary() {
-		ColorSummaryDto summary = new ColorSummaryDto();
-		summary.setId(this.id);
-		summary.setName(this.name);
-		summary.setHexCode(this.hexCode);
-		return summary;
 	}
 }

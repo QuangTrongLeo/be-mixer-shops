@@ -21,17 +21,28 @@ public class CartItem {
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
+	 @ManyToOne
+	 @JoinColumn(name = "color_id")
+	 private Color color;
+	    
+	 @ManyToOne
+	 @JoinColumn(name = "size_id")
+	 private Size size;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 
-	public CartItem(Long id, int quantity, int price, int totalPrice, Product product, Cart cart) {
+	public CartItem(Long id, int quantity, int price, int totalPrice, Product product, Color color, Size size,
+			Cart cart) {
 		super();
 		this.id = id;
 		this.quantity = quantity;
 		this.price = price;
 		this.totalPrice = totalPrice;
 		this.product = product;
+		this.color = color;
+		this.size = size;
 		this.cart = cart;
 	}
 
@@ -85,5 +96,21 @@ public class CartItem {
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
 	}
 }
