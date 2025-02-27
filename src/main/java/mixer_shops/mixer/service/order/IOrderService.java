@@ -9,4 +9,5 @@ public interface IOrderService {
 	OrderDto placeOrder(Long userId);
 	OrderDto getOrder(Long orderId);
 	int getTotalQuantity(List<OrderItem> items);
+	List<OrderDto> getUserOrders(Long userId);
 }

@@ -111,4 +111,12 @@ public class OrderService implements IOrderService{
 		return modelMapper.map(order, OrderDto.class);
 	}
 	
+	@Override
+	public List<OrderDto> getUserOrders(Long userId){
+		List<Order> orders = orderRepository.findByUserId(userId);
+		return orders.stream()
+				.map(order -> modelMapper
+						.map(order, OrderDto.class))
+				.toList();
+	}
 }
