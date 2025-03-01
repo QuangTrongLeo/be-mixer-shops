@@ -18,6 +18,7 @@ public interface IProductService {
 	List<ProductDto> getProductsByCategoryName(String categoryName);
 	List<ProductDto> getProductsByCategoryNameAndColorName(String categoryName, String colorName);
 	List<ProductDto> getProductsByName(String name);
+	List<ProductDto> getProductsByColorName(String colorName);
 	
 	ProductDto convertoDto(Product product);
 	List<ProductDto> getConvertedProducts(List<Product> products);
