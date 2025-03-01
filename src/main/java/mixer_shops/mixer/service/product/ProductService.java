@@ -130,4 +130,14 @@ public class ProductService implements IProductService{
 						.map(product, ProductDto.class))
 				.toList();
 	}
+
+	@Override
+	public List<ProductDto> getProductsByCategoryNameAndColorName(String categoryName, String colorName) {
+//		 TODO Auto-generated method stub
+		List<Product> products = productRepository.findByCategory_NameAndColors_NameIgnoreCase(categoryName, colorName);
+		return products.stream()
+				.map(product -> modelMapper
+						.map(product, ProductDto.class))
+				.toList();
+	}
 }

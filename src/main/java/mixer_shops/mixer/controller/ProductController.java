@@ -23,6 +23,7 @@ import mixer_shops.mixer.request.UpdateProductRequest;
 import mixer_shops.mixer.response.ApiResponse;
 import mixer_shops.mixer.service.product.IProductService;
 
+@CrossOrigin(origins = "${api.host}")
 @RestController
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
@@ -33,7 +34,6 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
-	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/product/{productId}")
 	public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
 		try {
@@ -83,7 +83,6 @@ public class ProductController {
 		}
 	}
 	
-	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllProducts(){
 		try {
@@ -108,16 +107,24 @@ public class ProductController {
 		}
 	}
 	
-	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/by-name/{categoryName}/category")
 	public ResponseEntity<ApiResponse> getProductsByCategoryName(@PathVariable String categoryName){
-		try {
-			List<ProductDto> productDtos = productService.getProductsByCategoryName(categoryName);
-			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
-		} catch (Exception e) {
-			// TODO: handle exception
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
-		}
+	    try {
+	        List<ProductDto> productDtos = productService.getProductsByCategoryName(categoryName);
+	        return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
+	    }
+	}
+	
+	@GetMapping("/by/{categoryName}/category")
+	public ResponseEntity<ApiResponse> getProductsByCategoryNameAndColorName(@PathVariable String categoryName, @RequestParam String color){
+	    try {
+	        List<ProductDto> productDtos = productService.getProductsByCategoryNameAndColorName(categoryName, color);
+	        return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
+	    }
 	}
 	
 	@GetMapping("/by/{name}/product")

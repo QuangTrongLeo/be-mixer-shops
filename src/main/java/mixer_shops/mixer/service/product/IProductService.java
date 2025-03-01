@@ -12,9 +12,11 @@ public interface IProductService {
 	ProductDto getProductById(Long id);
 	ProductDto updateProduct(UpdateProductRequest request, Long productId);
 	void deleteProductById(Long id);
+	
 	List<Product> getAllProducts();
 	List<ProductDto> getProductsByCategory(Long categoryId);
 	List<ProductDto> getProductsByCategoryName(String categoryName);
+	List<ProductDto> getProductsByCategoryNameAndColorName(String categoryName, String colorName);
 	List<ProductDto> getProductsByName(String name);
 	
 	ProductDto convertoDto(Product product);
