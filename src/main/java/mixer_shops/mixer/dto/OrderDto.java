@@ -1,12 +1,10 @@
 package mixer_shops.mixer.dto;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Data;
 import mixer_shops.mixer.enums.OrderStatus;
-import mixer_shops.mixer.model.User;
 
 @Data
 public class OrderDto {
@@ -14,8 +12,8 @@ public class OrderDto {
 	private LocalDate orderDate;
 	private int totalAmount;
 	private OrderStatus orderStatus;
-	private Set<OrderItemDto> orderItems = new HashSet<OrderItemDto>();
-	private User user;
+	private Set<OrderItemDto> orderItems;
+//	private User user;
 	public Long getId() {
 		return id;
 	}
@@ -46,11 +44,11 @@ public class OrderDto {
 	public void setOrderItems(Set<OrderItemDto> orderItems) {
 		this.orderItems = orderItems;
 	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
+//	public User getUser() {
+//		return user;
+//	}
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 	
 }

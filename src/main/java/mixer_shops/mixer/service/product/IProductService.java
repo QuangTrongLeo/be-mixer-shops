@@ -14,6 +14,7 @@ public interface IProductService {
 	void deleteProductById(Long id);
 	List<Product> getAllProducts();
 	List<ProductDto> getProductsByCategory(Long categoryId);
+	List<ProductDto> getProductsByCategoryName(String categoryName);
 	List<ProductDto> getProductsByName(String name);
 	
 	ProductDto convertoDto(Product product);

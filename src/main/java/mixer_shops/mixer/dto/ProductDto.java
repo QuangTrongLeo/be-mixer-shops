@@ -2,6 +2,8 @@ package mixer_shops.mixer.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import mixer_shops.mixer.model.Category;
 
@@ -50,6 +52,7 @@ public class ProductDto {
 		this.colors = colors;
 	}
 	
+	@JsonIgnore
 	public ProductSummaryDto getProductSummary() {
         ProductSummaryDto summary = new ProductSummaryDto();
         summary.setId(this.id);

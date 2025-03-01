@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ProductController {
 		this.productService = productService;
 	}
 	
+	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/product/{productId}")
 	public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId){
 		try {
@@ -81,6 +83,7 @@ public class ProductController {
 		}
 	}
 	
+	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllProducts(){
 		try {
@@ -98,6 +101,18 @@ public class ProductController {
 	public ResponseEntity<ApiResponse> getProductsByCategoryId(@PathVariable Long categoryId){
 		try {
 			List<ProductDto> productDtos = productService.getProductsByCategory(categoryId);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
+		}
+	}
+	
+	@CrossOrigin(origins = "${api.host}")
+	@GetMapping("/by-name/{categoryName}/category")
+	public ResponseEntity<ApiResponse> getProductsByCategoryName(@PathVariable String categoryName){
+		try {
+			List<ProductDto> productDtos = productService.getProductsByCategoryName(categoryName);
 			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
 		} catch (Exception e) {
 			// TODO: handle exception

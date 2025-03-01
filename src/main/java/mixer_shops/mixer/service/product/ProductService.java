@@ -120,4 +120,14 @@ public class ProductService implements IProductService{
 		productDto.setImages(imageDtos);
 		return productDto;
 	}
+
+	@Override
+	public List<ProductDto> getProductsByCategoryName(String categoryName) {
+		// TODO Auto-generated method stub
+		List<Product> products = productRepository.findByCategory_NameIgnoreCase(categoryName);
+		return products.stream()
+				.map(product -> modelMapper
+						.map(product, ProductDto.class))
+				.toList();
+	}
 }

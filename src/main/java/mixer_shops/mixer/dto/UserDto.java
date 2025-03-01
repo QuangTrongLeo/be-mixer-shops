@@ -1,9 +1,8 @@
 package mixer_shops.mixer.dto;
 
-import java.util.Collection;
+import java.util.List;
 
 import lombok.Data;
-import mixer_shops.mixer.model.Role;
 
 @Data
 public class UserDto {
@@ -11,8 +10,8 @@ public class UserDto {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String password;
-	private Collection<Role> roles;
+	private List<OrderDto> orders;
+	private CartDto cart;
 	public Long getId() {
 		return id;
 	}
@@ -24,12 +23,6 @@ public class UserDto {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -43,11 +36,17 @@ public class UserDto {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public Collection<Role> getRoles() {
-		return roles;
+	public List<OrderDto> getOrders() {
+		return orders;
 	}
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
+	public void setOrders(List<OrderDto> orders) {
+		this.orders = orders;
+	}
+	public CartDto getCart() {
+		return cart;
+	}
+	public void setCart(CartDto cart) {
+		this.cart = cart;
 	}
 	
 }

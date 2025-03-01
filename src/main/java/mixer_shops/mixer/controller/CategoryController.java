@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 	
+	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/all")
 	public ResponseEntity<ApiResponse> getAllCategories(){
 		try {
@@ -63,6 +65,7 @@ public class CategoryController {
 		} 
 	}
 	
+	@CrossOrigin(origins = "${api.host}")
 	@GetMapping("/category/{categoryId}")
 	public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long categoryId){
 		try {
@@ -74,10 +77,11 @@ public class CategoryController {
 		}
 	}
 	
-	@GetMapping("/{name}/category")
-	public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name){
+	@CrossOrigin(origins = "${api.host}")
+	@GetMapping("/{categoryName}/category")
+	public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String categoryName){
 		try {
-			CategoryDto categoryDto = categoryService.getCategoryByName(name);
+			CategoryDto categoryDto = categoryService.getCategoryByName(categoryName);
 			return ResponseEntity.ok(new ApiResponse("Success!", categoryDto)); 
 		} catch (Exception e) {
 			// TODO: handle exception
