@@ -102,7 +102,12 @@ public class ProductService implements IProductService{
 	@Override
 	public List<ProductDto> getProductsByName(String name) {
 		// TODO Auto-generated method stub
-		List<Product> products = productRepository.findByNameIgnoreCase(name);
+		List<Product> products;
+		if (name == null || name.isEmpty()) {
+			products = productRepository.findAll();
+		} else {
+			products = productRepository.findByNameContainingIgnoreCase(name);
+		}
 		return getConvertedProducts(products);
 	}
 	

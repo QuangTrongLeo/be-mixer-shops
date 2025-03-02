@@ -127,8 +127,8 @@ public class ProductController {
 	    }
 	}
 	
-	@GetMapping("/by/{name}/product")
-	public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name){
+	@GetMapping("/by-name-product")
+	public ResponseEntity<ApiResponse> getProductsByName(@RequestParam(required = false) String name){
 		try {
 			List<ProductDto> productDtos = productService.getProductsByName(name);
 			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
