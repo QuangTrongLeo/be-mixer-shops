@@ -149,4 +149,15 @@ public class ProductController {
 		}
 	}
 	
+	@GetMapping("/by-name-product-and-color")
+	public ResponseEntity<ApiResponse> getProductsByNameAndColorName(@RequestParam String name, @RequestParam String color){
+		try {
+			List<ProductDto> productDtos = productService.getProductsByNameAndColorName(name, color);
+			return ResponseEntity.ok(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
+		}
+	}
+	
 }

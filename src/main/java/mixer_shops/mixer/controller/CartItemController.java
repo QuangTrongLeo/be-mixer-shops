@@ -11,34 +11,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mixer_shops.mixer.dto.CartDto;
+import mixer_shops.mixer.dto.UserDto;
 import mixer_shops.mixer.response.ApiResponse;
 import mixer_shops.mixer.service.cart.ICartItemService;
 import mixer_shops.mixer.service.cart.ICartService;
+import mixer_shops.mixer.service.user.IUserService;
 
+@CrossOrigin(origins = "${api.host}")
 @RestController
 @RequestMapping("${api.prefix}/cart-items")
 public class CartItemController {
 	private final ICartItemService cartItemService;
 	private final ICartService cartService;
-	
-	public CartItemController(ICartItemService cartItemService, ICartService cartService) {
+	private final IUserService userService;
+
+	public CartItemController(ICartItemService cartItemService, ICartService cartService, IUserService userService) {
 		super();
 		this.cartItemService = cartItemService;
 		this.cartService = cartService;
+		this.userService = userService;
 	}
 
-	@CrossOrigin(origins = "${api.host}")
 	@PostMapping("/item/add")
-	public ResponseEntity<ApiResponse> addItemToCart(@RequestParam(required = false) Long cartId, 
+	public ResponseEntity<ApiResponse> addItemToCart(
 													@RequestParam Long productId, 
 													@RequestParam Long colorId,
 													@RequestParam Long sizeId,
 													@RequestParam int quantity){
 		try {
-			if (cartId == null) {
-				cartId = cartService.initializeNewCart();
-			}
-			cartItemService.addItemToCart(cartId, productId, colorId, sizeId, quantity);
+			UserDto userDto = userService.getUserById(1L);
+			CartDto cartDto = cartService.initializeNewCart(userDto);
+			cartItemService.addItemToCart(cartDto.getId(), productId, colorId, sizeId, quantity);
 			return ResponseEntity.ok(new ApiResponse("Success!", null));
 		} catch (Exception e) {
 			// TODO: handle exception

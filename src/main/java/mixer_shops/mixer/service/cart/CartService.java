@@ -6,22 +6,28 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import mixer_shops.mixer.dto.CartDto;
+import mixer_shops.mixer.dto.UserDto;
 import mixer_shops.mixer.exceptions.ResourcesException;
 import mixer_shops.mixer.model.Cart;
 import mixer_shops.mixer.model.CartItem;
+import mixer_shops.mixer.model.User;
 import mixer_shops.mixer.repository.CartItemRepository;
 import mixer_shops.mixer.repository.CartRepository;
+import mixer_shops.mixer.repository.UserRepository;
 
 @Service
 public class CartService implements ICartService{
 	private final CartRepository cartRepository;
 	private final CartItemRepository cartItemRepository;
+	private final UserRepository userRepository;
 	private final ModelMapper modelMapper;
 
-	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, ModelMapper modelMapper) {
+	public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository,
+			UserRepository userRepository, ModelMapper modelMapper) {
 		super();
 		this.cartRepository = cartRepository;
 		this.cartItemRepository = cartItemRepository;
+		this.userRepository = userRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -65,12 +71,20 @@ public class CartService implements ICartService{
 	}
 	
 	@Override
-	public Long initializeNewCart() {
+	public CartDto initializeNewCart(UserDto userDto) {
+		User user = userRepository.findById(userDto.getId())
+				.orElseThrow(() -> new ResourcesException("User not found!"));
 		Cart newCart = new Cart();
 		newCart.setTotalAmount(0);
 		newCart.setCartItems(new HashSet<CartItem>());
+		
+		newCart.setUser(user);
+		
 		Cart saveCart = cartRepository.save(newCart);
-		return saveCart.getId();
+		
+		saveCart.updateTotalAmount();
+		
+		return modelMapper.map(saveCart, CartDto.class);
 	}
 
 }

@@ -2,6 +2,7 @@ package mixer_shops.mixer.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import mixer_shops.mixer.dto.CartDto;
 import mixer_shops.mixer.response.ApiResponse;
 import mixer_shops.mixer.service.cart.ICartService;
 
+@CrossOrigin(origins = "${api.host}")
 @RestController
 @RequestMapping("${api.prefix}/carts")
 public class CartController {
