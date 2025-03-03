@@ -63,11 +63,18 @@ public class CartService implements ICartService{
 	@Override
 	public void clearCart(Long cartId) {
 		// TODO Auto-generated method stub
-		Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourcesException("Cart not found!"));
+		Cart cart = cartRepository.findById(cartId)
+				.orElseThrow(() -> new ResourcesException("Cart not found!"));
+		
+		// Xóa tất cả các item trong giỏ hàng
 		cart.getCartItems().clear();
+		
 		cartRepository.save(cart);
-		cartItemRepository.deleteAllByCartId(cartId);
-		cartRepository.deleteById(cartId);
+		
+		if (cart.getCartItems().isEmpty()) {
+	        cartItemRepository.deleteAllByCartId(cartId); // Xóa các cartItem
+	        cartRepository.deleteById(cartId); // Xóa giỏ hàng
+	    }
 	}
 	
 	@Override

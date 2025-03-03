@@ -42,6 +42,10 @@ public class OrderService implements IOrderService{
 	public OrderDto placeOrder(Long userId) {
 		// TODO Auto-generated method stub
 		Cart cart = cartRepository.findByUserId(userId);
+		if (cart == null) {
+			throw new ResourcesException("Cart not found for user with ID: " + userId);
+		}
+		
 		Order order = createOrder(cart);
 		List<OrderItem> orderItems = createOrderItems(order, cart);
 		order.setOrderItems(new HashSet<OrderItem>(orderItems));

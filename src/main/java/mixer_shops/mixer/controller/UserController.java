@@ -2,6 +2,7 @@ package mixer_shops.mixer.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import mixer_shops.mixer.request.UpdateUserRequest;
 import mixer_shops.mixer.response.ApiResponse;
 import mixer_shops.mixer.service.user.IUserService;
 
+@CrossOrigin(origins = "${api.host}")
 @RestController
 @RequestMapping("${api.prefix}/users")
 public class UserController {
@@ -35,6 +37,7 @@ public class UserController {
 			return ResponseEntity.ok(new ApiResponse("Success!", userDto));
 		} catch (ResourcesException e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
 	}

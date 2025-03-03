@@ -26,13 +26,14 @@ public class OrderContrller {
 		this.orderService = orderService;
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/order")
 	public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId){
 		try {
 			OrderDto orderDto = orderService.placeOrder(userId);
 			return ResponseEntity.ok(new ApiResponse("Success!", orderDto));
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error!", null));
 		}
 	}
